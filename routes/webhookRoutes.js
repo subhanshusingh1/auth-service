@@ -55,9 +55,12 @@ router.post("/clerk", bodyParser.json(), async (req, res) => {
   // Extract relevant data from the payload
   const { id, first_name, last_name, role, email_addresses } = evt.data;
   const eventType = evt.type;
-  
-  // Extract email from email_addresses array
-  const email = email_addresses[0]?.email_address;
+
+  // Check if email_addresses exists and is an array, then extract the email
+  let email = null;
+  if (Array.isArray(email_addresses) && email_addresses.length > 0) {
+    email = email_addresses[0]?.email_address;
+  }
 
   // If email is not found, return an error
   if (!email) {
